@@ -2,8 +2,8 @@ class Pieces
 
   attr_reader :color
 
-  def initialize(board, position, color)
-      @board = board
+  def initialize(position, color)
+      @board = Array.new(8) { Array.new(8) }
       @position = position
       @color = color
   end
@@ -40,25 +40,41 @@ end
 class Bishop < SlidingPieces
 
   def move_dirs
-      #Deltat that the bishop can take in an array
+
   end
 
   def moves(move_dirs)
     super(move_dirs)
   end
 end
-
+require "byebug"
 class Rook < SlidingPieces
     def move_dirs
 
     end
 
-    def moves(move_dirs)
-      super(move_dirs)
+    def moves
+      poss_dest = []
+      row = @position.first
+      col = @position.last
+      8.times do |index|
+        byebug
+        poss_dest << [row, index] unless [row, index] == @position
+        poss_dest << [index, col] unless [index, col] == @position
+      end
+      poss_dest
     end
 
 end
 
 class Queen < SlidingPieces
+  def move_dirs
+
+  end
+
+  def moves(move_dirs)
+    super(move_dirs)
+  end
+
 
 end
