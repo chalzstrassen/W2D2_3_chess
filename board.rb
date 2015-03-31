@@ -2,6 +2,8 @@ require_relative("pieces.rb")
 require_relative("sliding_pieces.rb")
 require_relative("stepping_pieces.rb")
 require "colorize"
+
+require 'byebug'
 class Board
   BACK_ROW = [
               Rook,
@@ -13,6 +15,21 @@ class Board
               Knight,
               Rook
               ]
+
+  UNICODE = {
+    :wking     =>   "\u2654 ",
+    :wqueen    =>   "\u2655 ",
+    :wrook     =>   "\u2656 ",
+    :wbishop   =>   "\u2657 ",
+    :wknight   =>   "\u2658 ",
+    :wpawn     =>   "\u2656 ",
+    :bking     =>   "\u265A ",
+    :bqueen    =>   "\u265B ",
+    :brook     =>   "\u265C ",
+    :bbishop   =>   "\u265D ",
+    :bknight   =>   "\u265E ",
+    :bpawn     =>   "\u265F "
+  }
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
@@ -31,33 +48,38 @@ class Board
   end
 
   def render
-    unicode_hash = {
-      :wking     =>   "\u2654 ",
-      :wqueen    =>   "\u2655 ",
-      :wrook     =>   "\u2656 ",
-      :wbishop   =>   "\u2657 ",
-      :wknight   =>   "\u2658 ",
-      :wpawn     =>   "\u2656 ",
-      :bking     =>   "\u265A ",
-      :bqueen    =>   "\u265B ",
-      :brook     =>   "\u265C ",
-      :bbishop   =>   "\u265D ",
-      :bknight   =>   "\u265E ",
-      :bpawn     =>   "\u265F ",
-      :empty     =>   "  "
-    }
-
     @grid.each_with_index do |row, r_idx|
       line = ""
-      row.each do |space, s_idx|
+      row.each_with_index do |space, s_idx|
         if (r_idx.even? && s_idx.even?) ||
           (r_idx.odd? && s_idx.odd?)
-          line += "  "
+          line += display_tile(r_idx, s_idx).colorize(:black)
         else
-          line += "  ".on_light_black
+          line += display_tile(r_idx, s_idx).colorize(:black).on_light_black
         end
       end
       puts line
+    end
+
+  end
+
+  def display_tile(row, col)
+    return "  " if @grid[row][col].nil?
+    byebug
+    piece = @grid[row][col]
+    case piece.class
+    when King
+      return piece.color == :b ? UNICODE[:bking] : UNICODE[:wking]
+    when Queen
+      return piece.color == :b ? UNICODE[:bqueen] : UNICODE[:wqueen]
+    when Rook
+      return piece.color == :b ? UNICODE[:brook] : UNICODE[:wrook]
+    when Knight
+      return piece.color == :b ? UNICODE[:bknight] : UNICODE[:wknight]
+    when Bishop
+      return piece.color == :b ? UNICODE[:bbishop] : UNICODE[:wbishop]
+    else
+      return piece.color == :b ? UNICODE[:bpawn] : UNICODE[:wpawn]
     end
 
   end
