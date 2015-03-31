@@ -1,31 +1,7 @@
-class Pieces
+require_relative("base_classes.rb")
 
-  attr_reader :color
-
-  def initialize(position, color)
-      @board = Array.new(8) { Array.new(8) }
-      @position = position
-      @color = color
-  end
-
-  def moves
-    #returns array of possible moves.
-  end
-
-  def valid_moves
-    #
-  end
-
-end
-
-require 'byebug'
 class SlidingPieces < Pieces
 
-  def moves(dirs)
-    #array of positions piece can slide to
-    #making sure no friendlies in its way
-    #making sure it stops at enemy
-  end
   def rook_moves
     poss_dest = []
     row = @position.first
@@ -53,7 +29,6 @@ class SlidingPieces < Pieces
   def left_up(row, col)
     return [] if row == 0
     poss_dest = []
-    #byebug
     (row-1).downto(0).each do |r_index|
       col -= 1
       poss_dest <<  [r_index, col] if col >= 0
@@ -94,14 +69,6 @@ class SlidingPieces < Pieces
 
 end
 
-
-class Stepping < Pieces
-  def moves(dirs)
-    #array of positions piece can slide to
-    #making sure position is not occupied with friendly
-  end
-end
-
 class Bishop < SlidingPieces
 
   def moves
@@ -110,7 +77,7 @@ class Bishop < SlidingPieces
 
 
 end
-require "byebug"
+
 class Rook < SlidingPieces
     def moves
       rook_moves
@@ -128,6 +95,4 @@ class Queen < SlidingPieces
   def moves
     bishop_moves + rook_moves
   end
-
-
 end
