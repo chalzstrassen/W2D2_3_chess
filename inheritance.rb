@@ -9,6 +9,16 @@ class Employee
       @boss = boss
     end
 
+    def bonus(multiplier)
+      salary * multiplier
+    end
+
+    def subordinates_salary
+      0
+    end
+
+
+
 end
 
 class Manager < Employee
@@ -20,9 +30,22 @@ class Manager < Employee
     @subordinates = []
   end
 
+  def bonus(multiplier)
+    subordinates_salary * multiplier
+  end
+
   def add_subordinate(employee)
     employee.boss = self
     @subordinates << employee
+  end
+
+  def subordinates_salary
+    return self.salary if @subordinates.nil?
+    total = 0
+    @subordinates.each do |subordinate|
+      total = subordinate.salary + subordinate.subordinates_salary
+    end
+    total
   end
 
 end
