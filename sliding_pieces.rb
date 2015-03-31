@@ -1,4 +1,4 @@
-require_relative("base_classes.rb")
+require_relative("pieces.rb")
 
 class SlidingPieces < Pieces
 
