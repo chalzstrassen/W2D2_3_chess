@@ -1,4 +1,4 @@
-
+require "byebug"
 class Pieces
 
   attr_reader :color
@@ -15,9 +15,14 @@ class Pieces
   def make_move(pos)
     if self.moves.include?(pos)
       @board[self.position] = nil
+      capture_piece(pos) unless @board[pos].nil?
       self.position = pos
       @board[pos] = self
     end
   end
 
+  def capture_piece(pos)
+    captured_piece = @board[pos]
+    captured_piece.position = nil
+  end
 end
