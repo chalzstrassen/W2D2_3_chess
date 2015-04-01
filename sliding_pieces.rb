@@ -3,15 +3,9 @@ require_relative("pieces.rb")
 class SlidingPieces < Pieces
 
   def rook_moves
-    poss_dest = []
     row = @position.first
     col = @position.last
-    8.times do |index|
-
-      poss_dest << [row, index] unless [row, index] == @position
-      poss_dest << [index, col] unless [index, col] == @position
-    end
-    poss_dest
+    rook_vertical(row, col) + rook_horizontal(row, col)
   end
 
   def bishop_moves
@@ -25,6 +19,47 @@ class SlidingPieces < Pieces
   end
 
   private
+  def rook_vertical(row, col)
+    vertical_pos = []
+    if row < 6
+      (row+1).upto(7) do |row_below|
+        pos = [row_below, col]
+        break if !@board[pos].nil? && @board[pos].color == self.color
+        vertical_pos << pos
+        break if !@board[pos].nil? && @board[pos].color != self.color
+      end
+    end
+    if row > 0
+      (row-1).downto(0) do |row_above|
+        pos = [row_above, col]
+        break if !@board[pos].nil? && @board[pos].color == self.color
+        vertical_pos << pos
+        break if !@board[pos].nil? && @board[pos].color != self.color
+      end
+    end
+
+    vertical_pos
+  end
+
+  def rook_horizontal(row, col)
+    horizontal_pos = []
+    if col.between?(0,7)
+      (col+ 1).upto(7) do |right_col|
+        pos = [row, right_col]
+        break if !@board[pos].nil? && @board[pos].color == self.color
+        horizontal_pos << pos
+        break if !@board[pos].nil? && @board[pos].color != self.color
+      end
+
+      (col-1).downto(0) do |left_col|
+        pos = [row, left_col]
+        break if !@board[pos].nil? && @board[pos].color == self.color
+        horizontal_pos << pos
+        break if !@board[pos].nil? && @board[pos].color != self.color
+      end
+    end
+    horizontal_pos
+  end
 
   def left_up(row, col)
     return [] if row == 0
