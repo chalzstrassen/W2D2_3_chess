@@ -34,7 +34,6 @@ class Board
   def initialize
     @grid = Array.new(8) { Array.new(8) }
     place_pieces
-    render
   end
 
   def [](pos)
@@ -48,6 +47,7 @@ class Board
   end
 
   def render
+    puts "   A B C D E F G H".colorize(:white).on_black
     @grid.each_with_index do |row, r_idx|
       line = ""
       row.each_with_index do |space, s_idx|
@@ -58,7 +58,8 @@ class Board
           line += display_tile(r_idx, s_idx).colorize(:black).on_light_red
         end
       end
-      puts line
+
+      puts " #{r_idx + 1} ".colorize(:white).on_black + "#{line}"
     end
 
   end
@@ -115,6 +116,25 @@ class Board
     end
 
     dup_board
+  end
+  def checkmate?(color)
+    return false unless self.in_check?(color)
+
+    all_pieces = []
+    @grid.each do |row|
+      row.each do |tile|
+        next if tile.nil?
+        if tile.is_a?(Pieces) && tile.color == color
+          all_pieces << tile
+        end
+      end
+    end
+
+    all_pieces.each do |piece|
+      return true if piece.moves.all? {|move| piece.move_into_check?(move) }
+    end
+
+    false
   end
 
   private

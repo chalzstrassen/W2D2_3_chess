@@ -140,6 +140,6 @@ class Queen < SlidingPieces
   end
 
   def moves
-    diag_moves + ver_hor_moves
+    diag_moves + vert_hor_moves
   end
 end

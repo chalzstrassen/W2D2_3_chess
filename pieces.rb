@@ -19,6 +19,10 @@ class Pieces
       self.position = pos
       @board[pos] = self
     end
+    if self.class == Pawn
+      @first_move = false
+    end
+    true
   end
 
   def capture_piece(pos)
@@ -37,5 +41,7 @@ class Pieces
     end
     false
   end
+
+
 
 end

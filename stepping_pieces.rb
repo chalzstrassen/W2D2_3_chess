@@ -1,4 +1,5 @@
 require_relative("pieces.rb")
+require "byebug"
 
 class SteppingPieces < Pieces
   def moves(deltas)
@@ -19,7 +20,7 @@ class SteppingPieces < Pieces
     return true if @board[pos].nil?
     return true if self.color != @board[pos].color
     false
-    
+
   end
 end
 
@@ -66,12 +67,26 @@ class Pawn < SteppingPieces
     [-1, -1],
   ]
 
+  FIRST_DELTAS = [
+    [1, 0],
+    [2, 0],
+    [-1, 0],
+    [-2, 0]
+  ]
+
+  def initialize(board, pos, color, first_move = true)
+    super(board, pos, color)
+    @first_move = first_move
+  end
+
+
   def moves
-    delta = DELTAS
+    delta = @first_move ? FIRST_DELTAS : DELTAS
+    mid = delta.count / 2
     if color == :w
-      delta = DELTAS.drop(3)
+      delta = delta.drop(mid)
     else
-      delta = DELTAS.take(3)
+      delta = delta.take(mid)
     end
 
     super(delta)
