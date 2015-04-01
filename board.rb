@@ -22,7 +22,7 @@ class Board
     :wrook     =>   "\u2656 ",
     :wbishop   =>   "\u2657 ",
     :wknight   =>   "\u2658 ",
-    :wpawn     =>   "\u2656 ",
+    :wpawn     =>   "\u2659 ",
     :bking     =>   "\u265A ",
     :bqueen    =>   "\u265B ",
     :brook     =>   "\u265C ",
@@ -53,9 +53,9 @@ class Board
       row.each_with_index do |space, s_idx|
         if (r_idx.even? && s_idx.even?) ||
           (r_idx.odd? && s_idx.odd?)
-          line += display_tile(r_idx, s_idx).colorize(:black)
-        else
           line += display_tile(r_idx, s_idx).colorize(:black).on_light_black
+        else
+          line += display_tile(r_idx, s_idx).colorize(:black).on_light_red
         end
       end
       puts line
@@ -65,18 +65,18 @@ class Board
 
   def display_tile(row, col)
     return "  " if @grid[row][col].nil?
-    byebug
+
     piece = @grid[row][col]
-    case piece.class
-    when King
+
+    if piece.is_a?(King)
       return piece.color == :b ? UNICODE[:bking] : UNICODE[:wking]
-    when Queen
+    elsif piece.is_a?(Queen)
       return piece.color == :b ? UNICODE[:bqueen] : UNICODE[:wqueen]
-    when Rook
+    elsif piece.is_a?(Rook)
       return piece.color == :b ? UNICODE[:brook] : UNICODE[:wrook]
-    when Knight
+    elsif piece.is_a?(Knight)
       return piece.color == :b ? UNICODE[:bknight] : UNICODE[:wknight]
-    when Bishop
+    elsif piece.is_a?(Bishop)
       return piece.color == :b ? UNICODE[:bbishop] : UNICODE[:wbishop]
     else
       return piece.color == :b ? UNICODE[:bpawn] : UNICODE[:wpawn]
@@ -92,6 +92,13 @@ class Board
       self[pos] = piece.new(self, pos, :b)
       pos = [7, col]
       self[pos] = piece.new(self, pos, :w)
+    end
+
+    8.times do |col|
+      pos = [1, col]
+      self[pos] = Pawn.new(self, pos, :b)
+      pos = [6, col]
+      self[pos] = Pawn.new(self, pos, :w)
     end
 
   end
