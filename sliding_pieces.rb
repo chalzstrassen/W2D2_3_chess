@@ -31,7 +31,10 @@ class SlidingPieces < Pieces
     poss_dest = []
     (row-1).downto(0).each do |r_index|
       col -= 1
-      poss_dest <<  [r_index, col] if col >= 0
+      pos = [r_index, col]
+      break if !@board[pos].nil? && @board[pos].color == self.color
+      poss_dest << pos if col >= 0
+      break if !@board[pos].nil? && @board[pos].color != self.color
     end
     poss_dest
   end
@@ -41,7 +44,10 @@ class SlidingPieces < Pieces
     poss_dest =[]
     (row+1).upto(7).each do |r_index|
       col -= 1
+      pos = [r_index, col]
+      break if !@board[pos].nil? && @board[pos].color == self.color
       poss_dest << [r_index, col] if col >= 0
+      break if !@board[pos].nil? && @board[pos].color != self.color
     end
     poss_dest
   end
@@ -51,7 +57,10 @@ class SlidingPieces < Pieces
     poss_dest = []
     (row-1).downto(0).each do |r_index|
       col += 1
+      pos = [r_index, col]
+      break if !@board[pos].nil? && @board[pos].color == self.color
       poss_dest << [r_index, col] if col <= 7
+      break if !@board[pos].nil? && @board[pos].color != self.color
     end
     poss_dest
   end
@@ -61,7 +70,10 @@ class SlidingPieces < Pieces
     poss_dest = []
     (row+1).upto(7).each do |r_index|
       col += 1
+      pos = [r_index, col]
+      break if !@board[pos].nil? && @board[pos].color == self.color
       poss_dest << [r_index, col] if col <= 7
+      break if !@board[pos].nil? && @board[pos].color != self.color
     end
     poss_dest
   end
