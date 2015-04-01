@@ -12,8 +12,12 @@ class Pieces
 
 
 
-  def valid_moves
-    #
+  def make_move(pos)
+    if self.moves.include?(pos)
+      @board[self.position] = nil
+      self.position = pos
+      @board[pos] = self
+    end
   end
 
 end

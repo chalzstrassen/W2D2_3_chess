@@ -7,11 +7,19 @@ class SteppingPieces < Pieces
     poss_dest = []
     deltas.each do |dx, dy|
       if (row + dx).between?(0, 7) && (col + dy).between?(0, 7)
-        poss_dest << [row + dx, col + dy]
+        pos = [row + dx, col + dy]
+        poss_dest << pos if pos_valid?(pos)
       end
     end
 
     poss_dest
+  end
+
+  def pos_valid?(pos)
+    return true if @board[pos].nil?
+    return true if self.color != @board[pos].color
+    false
+    
   end
 end
 
