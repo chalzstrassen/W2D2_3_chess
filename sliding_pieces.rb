@@ -2,13 +2,13 @@ require_relative("pieces.rb")
 
 class SlidingPieces < Pieces
 
-  def rook_moves
+  def vert_hor_moves
     row = @position.first
     col = @position.last
-    rook_vertical(row, col) + rook_horizontal(row, col)
+    vertical(row, col) + horizontal(row, col)
   end
 
-  def bishop_moves
+  def diag_moves
     row = @position.first
     col = @position.last
     left_up = left_up(row, col)
@@ -19,7 +19,7 @@ class SlidingPieces < Pieces
   end
 
   private
-  def rook_vertical(row, col)
+  def vertical(row, col)
     vertical_pos = []
     if row < 6
       (row+1).upto(7) do |row_below|
@@ -41,7 +41,7 @@ class SlidingPieces < Pieces
     vertical_pos
   end
 
-  def rook_horizontal(row, col)
+  def horizontal(row, col)
     horizontal_pos = []
     if col.between?(0,7)
       (col+ 1).upto(7) do |right_col|
@@ -119,7 +119,7 @@ end
 class Bishop < SlidingPieces
 
   def moves
-    bishop_moves
+    diag_moves
   end
 
 
@@ -127,7 +127,7 @@ end
 
 class Rook < SlidingPieces
     def moves
-      rook_moves
+      vert_hor_moves
     end
 
 
@@ -140,6 +140,6 @@ class Queen < SlidingPieces
   end
 
   def moves
-    bishop_moves + rook_moves
+    diag_moves + ver_hor_moves
   end
 end

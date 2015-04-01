@@ -84,6 +84,39 @@ class Board
 
   end
 
+  def in_check?(color)
+    king = nil
+    @grid.each do |row|
+      row.each do |tile|
+        if tile.is_a?(King) && tile.color == color
+          king = tile
+        end
+      end
+    end
+
+    @grid.each do |row|
+      row.each do |tile|
+        #byebug
+        next if tile.nil?
+        if tile.is_a?(Pieces) && tile.color != color
+          return true if tile.moves.include?(king.position)
+        end
+      end
+    end
+    false
+  end
+
+  def deep_dup
+    dup_board = Board.new
+    @grid.each_with_index do |row, r_index|
+      row.each_with_index do |tile, t_index|
+        dup_board[[r_index, t_index]] = tile
+      end
+    end
+
+    dup_board
+  end
+
   private
 
   def place_pieces
@@ -102,27 +135,5 @@ class Board
     end
 
   end
-  # def generate_pieces
-  #   make_queens
-  #   make_kings
-  #   # make_bishops
-  #   # make_knights
-  #   # make_rooks
-  #   # make_pawns
-  # end
-  #
-  # def make_queens
-  #   black = Queen.new(self, [0, 3], :b)
-  #   self[[0, 3]] = black
-  #   white = Queen.new(self, [7, 3], :w)
-  #   self[[7, 3]] = white
-  # end
-  #
-  # def make_kings
-  #   black = King.new(self, [0, 4], :b)
-  #   self[[0,4]] = black
-  #   white = King.new(self, [7, 4], :w)
-  #   self[[7,4]] = white
-  # end
 
 end

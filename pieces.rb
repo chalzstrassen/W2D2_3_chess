@@ -25,4 +25,17 @@ class Pieces
     captured_piece = @board[pos]
     captured_piece.position = nil
   end
+
+
+
+  def move_into_check?(pos)
+    dup_board = @board.deep_dup
+    dup_piece = self.class.new(dup_board, self.position, self.color)
+    dup_piece.make_move(pos)
+    if dup_board.in_check?(self.color)
+      return true
+    end
+    false
+  end
+
 end
